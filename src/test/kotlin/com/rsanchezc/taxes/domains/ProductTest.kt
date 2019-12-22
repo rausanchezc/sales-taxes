@@ -15,4 +15,28 @@ class ProductTest {
             )
         }
     }
+
+    @Test
+    fun `product price lower than 0` () {
+        assertThrows<java.lang.IllegalArgumentException> {
+            Product(
+                id = 1,
+                name = "sandwich",
+                price = -1.0,
+                category = Category.FOOD
+            )
+        }
+    }
+
+    @Test
+    fun `product id negative number` () {
+        assertThrows<java.lang.IllegalArgumentException> {
+            Product(
+                id = -1,
+                name = "sandwich",
+                price = 12.56,
+                category = Category.FOOD
+            )
+        }
+    }
 }
