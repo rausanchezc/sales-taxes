@@ -1,4 +1,4 @@
-package com.rsanchezc.domains
+package com.rsanchezc.taxes.domains
 
 class Product(val id: Int, val name: String, val price: Double, val category: Category, val isImported: Boolean = false) {
     init {

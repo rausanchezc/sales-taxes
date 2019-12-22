@@ -1,4 +1,4 @@
-package com.rsanchezc.domains
+package com.rsanchezc.taxes.domains
 
 enum class Category {
     OTHERS,
