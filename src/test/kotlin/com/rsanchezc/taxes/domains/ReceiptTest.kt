@@ -7,6 +7,21 @@ import org.junit.jupiter.api.assertAll
 
 class ReceiptTest {
     private var receipt = Receipt()
+    private val productsInput1 = listOf(
+        Product(id = 1, name = "book", price = 12.49, category = Category.BOOKS),
+        Product(id = 2, name = "music CD", price = 14.99, category = Category.OTHERS),
+        Product(id = 3, name = "chocolate bar", price = 0.85, category = Category.FOOD)
+    )
+    private val productsInput2 = listOf(
+        Product(id = 4, name = "imported box of chocolates", price = 10.00, category = Category.FOOD, isImported = true),
+        Product(id = 5, name = "imported bottle of perfume", price = 47.50, category = Category.OTHERS, isImported = true)
+    )
+    private val productsInput3 = listOf(
+        Product( id = 6, name = "imported bottle of perfume", price = 27.99, category = Category.OTHERS, isImported = true),
+        Product( id = 7, name = "bottle of perfume", price = 18.99, category = Category.OTHERS),
+        Product( id = 8, name = "packet of headache pills", price = 9.75, category = Category.MEDICINES),
+        Product( id = 9, name = "box of imported chocolates", price = 11.25, category = Category.FOOD, isImported = true)
+    )
 
     @BeforeEach
     fun init() {
@@ -15,59 +30,31 @@ class ReceiptTest {
 
     @Test
     fun `add product in empty receipt`() {
-        receipt.addProduct(
-            product = Product(
-                id = 1,
-                name = "music CD",
-                price = 14.99,
-                category = Category.OTHERS
-            ),
-            taxes = 10.0F
-        )
+        val musicCD = productsInput1[1]
+
+        receipt.addProduct(musicCD, taxes = 10.0F)
 
         assertEquals(16.49, receipt.total)
     }
 
     @Test
     fun `add same product twice in empty receipt`() {
-        for(i in 1..2) {
-            receipt.addProduct(
-                product = Product(
-                    id = 1,
-                    name = "music CD",
-                    price = 14.99,
-                    category = Category.OTHERS
-                ),
-                taxes = 10.0F
-            )
+        val musicCD = productsInput1[1]
+        for (i in 1..2) {
+            receipt.addProduct(product = musicCD, taxes = 10.0F)
         }
 
-        assertAll("receipt add 2 products", {
+        assertAll("receipt add 2 productsInput1", {
             assertEquals(32.98, receipt.total)
             assertEquals(3.0, receipt.totalTaxes)
         })
     }
 
     @Test
-    fun `complex receipt INPUT 1` () {
-        val book = Product(
-            id = 1,
-            name = "book",
-            price = 12.49,
-            category = Category.BOOKS
-        )
-        val musicCD = Product(
-            id = 2,
-            name = "music CD",
-            price = 14.99,
-            category = Category.OTHERS
-        )
-        val chocolateBar = Product(
-            id = 3,
-            name = "chocolate bar",
-            price = 0.85,
-            category = Category.FOOD
-        )
+    fun `complex receipt INPUT 1`() {
+        val book = productsInput1[0]
+        val musicCD = productsInput1[1]
+        val chocolateBar = productsInput1[2]
 
         receipt.addProduct(product = book, taxes = 0.0F)
         receipt.addProduct(product = musicCD, taxes = 10.0F)
@@ -80,19 +67,24 @@ class ReceiptTest {
     }
 
     @Test
-    fun `complex receipt INPUT 2` () {
-        val importedBoxOfChocolates = Product(
-            id = 1,
-            name = "imported box of chocolates",
-            price = 10.00,
-            category = Category.FOOD
-        )
-        val importedBottleOfPerfume = Product(
-            id = 2,
-            name = "imported bottle of perfume",
-            price = 47.50,
-            category = Category.OTHERS
-        )
+    fun `complex receipt INPUT 1 print`() {
+        val book = productsInput1[0]
+        val musicCD = productsInput1[1]
+        val chocolateBar = productsInput1[2]
+
+        receipt.addProduct(product = book, taxes = 0.0F)
+        receipt.addProduct(product = musicCD, taxes = 10.0F)
+        receipt.addProduct(product = chocolateBar, taxes = 0.0F)
+
+        val output1 = "1 book: 12.49\n1 music CD: 16.49\n1 chocolate bar: 0.85\nSales Taxes: 1.5\nTotal: 29.83"
+
+        assertEquals(output1, "$receipt")
+    }
+
+    @Test
+    fun `complex receipt INPUT 2`() {
+        val importedBoxOfChocolates = productsInput2[0]
+        val importedBottleOfPerfume = productsInput2[1]
 
         receipt.addProduct(importedBoxOfChocolates, 5.0F)
         receipt.addProduct(importedBottleOfPerfume, 15.0F)
@@ -104,31 +96,11 @@ class ReceiptTest {
     }
 
     @Test
-    fun `complex receipt INPUT 3` () {
-        val importedBottleOfPerfume = Product(
-            id = 1,
-            name = "imported bottle of perfume",
-            price = 27.99,
-            category = Category.OTHERS
-        )
-        val bottleOfPerfume = Product(
-            id = 2,
-            name = "bottle of perfume",
-            price = 18.99,
-            category = Category.OTHERS
-        )
-        val pills = Product(
-            id = 3,
-            name = "packet of headache pills",
-            price = 9.75,
-            category = Category.MEDICINES
-        )
-        val importedBoxOfChocolates = Product(
-            id = 4,
-            name = "box of imported chocolates",
-            price = 11.25,
-            category = Category.FOOD
-        )
+    fun `complex receipt INPUT 3`() {
+        val importedBottleOfPerfume = productsInput3[0]
+        val bottleOfPerfume = productsInput3[1]
+        val pills = productsInput3[2]
+        val importedBoxOfChocolates = productsInput3[3]
 
         receipt.addProduct(importedBottleOfPerfume, 15.0F)
         receipt.addProduct(bottleOfPerfume, 10.0F)

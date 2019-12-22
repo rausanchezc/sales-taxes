@@ -18,6 +18,10 @@ class Receipt {
         calculateTotalTaxes()
     }
 
+    override fun toString(): String {
+        return lines.values.map { "$it" }.reduce { acc, s ->  "$acc\n$s"} + "\nSales Taxes: $totalTaxes\nTotal: $total"
+    }
+
     private fun calculateTotal() {
         total = lines.values
             .map { line -> line.subTotal }
