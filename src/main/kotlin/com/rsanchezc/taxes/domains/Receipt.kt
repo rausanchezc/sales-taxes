@@ -1,5 +1,7 @@
 package com.rsanchezc.taxes.domains
 
+import com.rsanchezc.taxes.helpers.format
+
 class Receipt {
     private val lines = hashMapOf<Int, OrderLine>()
     var total: Double = 0.0
@@ -19,7 +21,9 @@ class Receipt {
     }
 
     override fun toString(): String {
-        return lines.values.map { "$it" }.reduce { acc, s ->  "$acc\n$s"} + "\nSales Taxes: $totalTaxes\nTotal: $total"
+        return lines.values.map { "$it" }.reduce { acc, s ->  "$acc\n$s"} +
+                "\nSales Taxes: ${totalTaxes.format()}" +
+                "\nTotal: ${total.format()}"
     }
 
     private fun calculateTotal() {

@@ -1,5 +1,6 @@
 package com.rsanchezc.taxes.domains
 
+import com.rsanchezc.taxes.helpers.format
 import java.math.RoundingMode
 
 class OrderLine(private val product: Product, var amount: Int = 1, private val taxes: Float) {
@@ -32,7 +33,7 @@ class OrderLine(private val product: Product, var amount: Int = 1, private val t
     }
 
     override fun toString(): String {
-        return "$amount ${product.name}: $subTotal"
+        return "$amount ${product.name}: ${subTotal.format()}"
     }
 
     private fun calculateProductTaxes() = ((product.price * taxes) / 100).roundTaxes()
